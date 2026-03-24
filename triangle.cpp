@@ -54,10 +54,23 @@ double Triangle::heronArea(const Point &a, const Point &b, const Point &c) const
 }
 
 bool Triangle::containsHeron(const Point &P) const {
-    if (isDegenerate()) return false;
-    if (onBorder(P)) return true;
+    if (isDegenerate()) return false;        
+    if (onBorder(P)) return true;            
 
     double S_main = heronArea(A, B, C);
+
+    
+    if (S_main < 1e-6) {
+        
+        double xmin = min({A.x, B.x, C.x});
+        double xmax = max({A.x, B.x, C.x});
+        double ymin = min({A.y, B.y, C.y});
+        double ymax = max({A.y, B.y, C.y});
+
+        return (P.x >= xmin && P.x <= xmax && P.y >= ymin && P.y <= ymax);
+    }
+
+
     double S1 = heronArea(A, B, P);
     double S2 = heronArea(B, C, P);
     double S3 = heronArea(C, A, P);

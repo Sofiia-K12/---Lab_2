@@ -20,11 +20,11 @@ int main() {
     cin >> C.x >> C.y;
 
     Triangle T(A, B, C);
+    cout << "Площа трикутника: " << T.area() << endl;
 
     if (T.isDegenerate()) {
 
-         cout << "Площа трикутника: " << T.area() << endl;
-         
+
          cout << "Трикутник вироджений" << endl;
     } else {
         cout << "Трикутник НЕ вироджений" << endl;
