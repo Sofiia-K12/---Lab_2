@@ -1,52 +1,50 @@
 #include <iostream>
-#include <windows.h>
 #include "Triangle.h"
+#include <windows.h>
 
 using namespace std;
 
 int main() {
+
+    SetConsoleOutputCP(65001); 
+
+    Point A, B, C, P;
+
+    cout << "Введіть координати точки A (x y): ";
+    cin >> A.x >> A.y;
+
+    cout << "Введіть координати точки B (x y): ";
+    cin >> B.x >> B.y;
+
+    cout << "Введіть координати точки C (x y): ";
+    cin >> C.x >> C.y;
+
+    Triangle T(A, B, C);
+
+    if (T.isDegenerate()) {
+
+         cout << "Площа трикутника: " << T.area() << endl;
+         
+         cout << "Трикутник вироджений" << endl;
+    } else {
+        cout << "Трикутник НЕ вироджений" << endl;
+
+        
+
+        cout << "Введіть координати точки P (x y): ";
+        cin >> P.x >> P.y;
+
     
-    SetConsoleOutputCP(65001);
-
-    Triangle t;
-
-    cout << "Введіть координати трикутника:\n";
-    cout << "A (x y): ";
-    cin >> t.A.x >> t.A.y;
-    cout << "B (x y): ";
-    cin >> t.B.x >> t.B.y;
-    cout << "C (x y): ";
-    cin >> t.C.x >> t.C.y;
-
-    if (t.isDegenerate()) {
-        cout << "Трикутник вироджений. Програма завершена.\n";
-        return 0;
-    }
-
-    int n;
-    cout << "Скільки точок перевірити: ";
-    cin >> n;
-
-    for (int i = 0; i < n; i++) {
-        Point p;
-        cout << "\nТочка " << i + 1 << " (x y): ";
-        cin >> p.x >> p.y;
+        if (T.containsVector(P))
+            cout << "Точка належить трикутнику (векторний метод)" << endl;
+        else
+            cout << "Точка НЕ належить трикутнику (векторний метод)" << endl;
 
     
-        if (t.contains(p))
-            cout << "Через площі: належить трикутнику\n";
+        if (T.containsHeron(P))
+            cout << "Точка належить трикутнику (метод Герона)" << endl;
         else
-            cout << "Через площі: не належить трикутнику\n";
-
-       
-        if (t.containsVector(p))
-            cout << "Через векторний добуток: належить трикутнику\n";
-        else
-            cout << "Через векторний добуток: не належить трикутнику\n";
-            if (t.onBorder(p))
-            cout << "На межі трикутника: так\n";
-        else
-            cout << "На межі трикутника: ні\n";
+            cout << "Точка НЕ належить трикутнику (метод Герона)" << endl;
     }
 
     return 0;

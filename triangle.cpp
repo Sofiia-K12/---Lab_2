@@ -1,13 +1,14 @@
 #include "Triangle.h"
-#include <cmath>
 #include <algorithm>
+#include <cmath>
 
 using namespace std;
 
+
 double Triangle::cross(const Point &a, const Point &b, const Point &c) const {
-    return (b.x - a.x) * (c.y - a.y) -
-           (b.y - a.y) * (c.x - a.x);
+    return (b.x - a.x) * (c.y - a.y) - (b.y - a.y) * (c.x - a.x);
 }
+
 
 double Triangle::area() const {
     return abs(cross(A, B, C)) / 2.0;
@@ -15,43 +16,22 @@ double Triangle::area() const {
 
 
 bool Triangle::isDegenerate() const {
-    return abs(cross(A, B, C)) < 1e-6;
+    return abs(cross(A, B, C)) < 1e-9;
 }
 
-// Перевірка, чи точка лежить на відрізку
 bool Triangle::onSegment(const Point &a, const Point &b, const Point &p) const {
     double c = cross(a, b, p);
-
-    if (abs(c) > 1e-6) return false;
-
+    if (abs(c) > 1e-9
+) return false;
     return (p.x >= min(a.x, b.x) && p.x <= max(a.x, b.x) &&
             p.y >= min(a.y, b.y) && p.y <= max(a.y, b.y));
 }
 
-
 bool Triangle::onBorder(const Point &p) const {
-    return onSegment(A, B, p) ||
-           onSegment(B, C, p) ||
-           onSegment(C, A, p);
+    return onSegment(A, B, p) || onSegment(B, C, p) || onSegment(C, A, p);
 }
 
-// через площі 
-bool Triangle::contains(const Point &P) const {
-    if (isDegenerate()) return false;
 
-    if (onBorder(P)) return true;
-
-    Triangle T1 = {A, B, P};
-    Triangle T2 = {B, C, P};
-    Triangle T3 = {C, A, P};
-
-    double S_main = area();
-    double S_sum = T1.area() + T2.area() + T3.area();
-
-    return abs(S_main - S_sum) < 1e-9;
-}
-
-// через векторний добуток
 bool Triangle::containsVector(const Point &P) const {
     if (isDegenerate()) return false;
 
@@ -63,4 +43,24 @@ bool Triangle::containsVector(const Point &P) const {
     bool allNegative = (c1 <= 1e-9 && c2 <= 1e-9 && c3 <= 1e-9);
 
     return allPositive || allNegative;
+}
+
+double Triangle::heronArea(const Point &a, const Point &b, const Point &c) const {
+    double ab = sqrt((b.x - a.x)*(b.x - a.x) + (b.y - a.y)*(b.y - a.y));
+    double bc = sqrt((c.x - b.x)*(c.x - b.x) + (c.y - b.y)*(c.y - b.y));
+    double ca = sqrt((a.x - c.x)*(a.x - c.x) + (a.y - c.y)*(a.y - c.y));
+    double s = (ab + bc + ca) / 2.0;
+    return sqrt(s * (s - ab) * (s - bc) * (s - ca));
+}
+
+bool Triangle::containsHeron(const Point &P) const {
+    if (isDegenerate()) return false;
+    if (onBorder(P)) return true;
+
+    double S_main = heronArea(A, B, C);
+    double S1 = heronArea(A, B, P);
+    double S2 = heronArea(B, C, P);
+    double S3 = heronArea(C, A, P);
+
+    return abs(S_main - (S1 + S2 + S3)) < 1e-9;
 }
