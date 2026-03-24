@@ -23,24 +23,23 @@ int main() {
     cout << "Площа трикутника: " << T.area() << endl;
 
     if (T.isDegenerate()) {
-
-
-         cout << "Трикутник вироджений" << endl;
+        cout << "Трикутник вироджений" << endl;
     } else {
         cout << "Трикутник НЕ вироджений" << endl;
-
-        
 
         cout << "Введіть координати точки P (x y): ";
         cin >> P.x >> P.y;
 
-    
+        if (T.onBorder(P))
+            cout << "Точка лежить на межі трикутника" << endl;
+        else
+            cout << "Точка НЕ лежить на межі трикутника" << endl;
+
         if (T.containsVector(P))
             cout << "Точка належить трикутнику (векторний метод)" << endl;
         else
             cout << "Точка НЕ належить трикутнику (векторний метод)" << endl;
 
-    
         if (T.containsHeron(P))
             cout << "Точка належить трикутнику (метод Герона)" << endl;
         else
