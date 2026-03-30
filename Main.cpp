@@ -8,7 +8,7 @@ int main() {
 
     SetConsoleOutputCP(65001); 
 
-    Point A, B, C, P;
+    Point A, B, C;
 
     cout << "Введіть координати точки A (x y): ";
     cin >> A.x >> A.y;
@@ -26,8 +26,15 @@ int main() {
         cout << "Трикутник вироджений" << endl;
     } else {
         cout << "Трикутник НЕ вироджений" << endl;
+    }
 
-        cout << "Введіть координати точки P (x y): ";
+    int n;
+    cout << "Введіть кількість точок: ";
+    cin >> n;
+
+    for (int i = 0; i < n; i++) {
+        Point P;
+        cout << "\nТочка " << i + 1 << " (x y): ";
         cin >> P.x >> P.y;
 
         if (T.onBorder(P))
